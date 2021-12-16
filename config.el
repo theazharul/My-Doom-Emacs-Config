@@ -124,3 +124,6 @@
   (org-roam-db-autosync-mode)
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
+
+
+(use-package! lsp-tailwindcss)
