@@ -30,6 +30,7 @@
 ;; (setq doom-theme 'doom-one)
 (setq doom-theme 'doom-one)
 
+
 ;; If you use `org' and don't want your org files in the default location below,
 ;; change `org-directory'. It must be set before org loads!
 (setq org-directory "~/Dropbox/aimacs/aimorg/")
@@ -99,10 +100,10 @@
 ;; Agenda files. Change to your chosen file(s)
   (global-set-key (kbd "C-c a") 'org-agenda)
 
-  ;; (setq org-agenda-files (append
-  ;; 			       (directory-files-recursively "~/Dropbox/aimacs/aimorg/" "\\.org$")
-  ;; 			       (directory-files-recursively "~/Workspace/" "\\.org$")
-  ;; ))
+  (setq org-agenda-files (append
+			       (directory-files-recursively "~/Dropbox/aimacs/aimorg/" "\\.org$")
+			       (directory-files-recursively "~/Workspace/" "\\.org$")
+  ))
 
 
 (use-package! org-roam
