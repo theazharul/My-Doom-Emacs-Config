@@ -128,3 +128,4 @@
 
 
 (use-package! lsp-tailwindcss)
+(use-package! graphql-mode)
