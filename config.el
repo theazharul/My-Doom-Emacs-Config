@@ -126,6 +126,7 @@
   ;; If using org-roam-protocol
   (require 'org-roam-protocol))
 
+(+global-word-wrap-mode +1)
 
 (use-package! lsp-tailwindcss)
 (use-package! graphql-mode)
