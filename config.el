@@ -72,10 +72,11 @@
   (setq org-src-tab-acts-natively t)
   (setq org-src-window-setup 'current-window)
 (setq org-agenda-start-on-weekday 5)
-  (setq org-agenda-files '("~/Dropbox/aimacs/aimorg/gtd/inbox.org"
-                         "~/Dropbox/aimacs/aimorg/gtd/gtd.org"
-                         "~/Dropbox/aimacs/aimorg/gtd/tickler.org"
-			 "~/Dropbox/aimacs/aimorg/Habits.org"))
+
+  (setq org-agenda-files (append
+			       (directory-files-recursively "~/Dropbox/aimacs/aimorg/" "\\.org$")
+			       (directory-files-recursively "~/Workspace/" "\\.org$")
+  ))
   ;; TODO Keywords
   (setq org-todo-keywords
 	(quote ((sequence "TODO(t)" "IN_PROGRESS(i)" "|" "DONE(d)")
@@ -84,11 +85,9 @@
 	org-columns-default-format "%50ITEM(Task) %TODO %TAGS %SCHEDULED %DEADLINE %Effort(Estimated Effort){:} %CLOCKSUM"
 	create-lockfiles nil
 	org-archive-location "~/Dropbox/aimacs/aimorg/archive/Archive.org::* From %s"
-	org-refile-targets '(("~/Dropbox/aimacs/aimorg/gtd/gtd.org" :maxlevel . 3)
-                           ("~/Dropbox/aimacs/aimorg/gtd/someday.org" :level . 1)
-                           ("~/Dropbox/aimacs/aimorg/gtd/tickler.org" :maxlevel . 2))
+	org-refile-targets '((org-agenda-files :maxlevel . 3))
 	org-capture-templates
-	'(("i" "Inbox" entry (file+headline "~/Dropbox/aimacs/aimorg/gtd/inbox.org" "Inbox")
+	'(("i" "Inbox" entry (file+headline "~/Dropbox/aimacs/aimorg/inbox.org" "Inbox")
 	    "* TODO %? \n")
 	("t" "Todo" entry (file+headline "~/Dropbox/aimacs/aimorg/Todo.org" "Todo")
 	    "* TODO %? \n  %^t")
@@ -100,10 +99,6 @@
 ;; Agenda files. Change to your chosen file(s)
   (global-set-key (kbd "C-c a") 'org-agenda)
 
-  (setq org-agenda-files (append
-			       (directory-files-recursively "~/Dropbox/aimacs/aimorg/" "\\.org$")
-			       (directory-files-recursively "~/Workspace/" "\\.org$")
-  ))
 
 
 (use-package! org-roam
