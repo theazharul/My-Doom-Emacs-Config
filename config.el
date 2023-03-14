@@ -59,11 +59,13 @@
 ;;
 ;;
 ;; Org Mode
-(require 'org)
-(require 'org-agenda)
+;;
+  (setq org-directory "~/Dropbox/aimacs/aimorg")
+
+(after! org
+
   (defun org-clocking-buffer (&rest _))
   (setq org-startup-indented 'f)
-  (setq org-directory "~/Dropbox/aimacs/aimorg")
   (setq org-special-ctrl-a/e 't)
   (setq org-default-notes-file (concat org-directory "/Notes.org"))
   (define-key global-map "\C-cc" 'org-capture)
@@ -139,6 +141,7 @@
   (setq org-brain-title-max-length 12)
   (setq org-brain-include-file-entries nil
         org-brain-file-entries-use-title nil))
+  )
 
 ;; Allows you to edit entries directly from org-brain-visualize
 ;; (use-package! polymode
