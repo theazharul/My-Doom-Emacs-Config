@@ -67,7 +67,7 @@
   (defun org-clocking-buffer (&rest _))
   (setq org-startup-indented 'f)
   (setq org-special-ctrl-a/e 't)
-  (setq org-default-notes-file (concat org-directory "/Notes.org"))
+  (setq org-default-notes-file (concat org-directory "/notes.org"))
   (define-key global-map "\C-cc" 'org-capture)
   (setq org-mobile-directory "~/Dropbox/aimacs/aimorg")
   (setq org-src-fontify-natively 't)
@@ -86,17 +86,12 @@
 	org-global-properties '(("Effort_ALL". "0:10 0:15 0:20 0:30 1:00 2:00 3:00 4:00 6:00 8:00"))
 	org-columns-default-format "%50ITEM(Task) %TODO %TAGS %SCHEDULED %DEADLINE %Effort(Estimated Effort){:} %CLOCKSUM"
 	create-lockfiles nil
-	org-archive-location "~/Dropbox/aimacs/aimorg/archive/Archive.org::* From %s"
+	org-archive-location "~/Dropbox/aimacs/aimorg/archive/archive.org::* From %s"
 	org-refile-targets '((org-agenda-files :maxlevel . 3))
 	org-capture-templates
 	'(("i" "Inbox" entry (file+headline "~/Dropbox/aimacs/aimorg/inbox.org" "Inbox")
 	    "* TODO %? \n")
-	("t" "Todo" entry (file+headline "~/Dropbox/aimacs/aimorg/Todo.org" "Todo")
-	    "* TODO %? \n  %^t")
-	("l" "Learn" entry (file+headline "~/Dropbox/aimacs/aimorg/Learn.org" "Learn")
-	    "* %? \n")
-	("r" "Research" entry (file+headline "~/Dropbox/aimacs/aimorg/Research.org" "Research")
-	    "* %? \n")))
+	))
 
 ;; Agenda files. Change to your chosen file(s)
   (global-set-key (kbd "C-c a") 'org-agenda)

@@ -151,6 +151,7 @@
        ;;nix               ; I hereby declare "nix geht mehr!"
        ;;ocaml             ; an objective camel
        (org
+        +journal
         +roam2
        +brain
        +pomodoro
