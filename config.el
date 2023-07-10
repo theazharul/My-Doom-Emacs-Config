@@ -81,7 +81,7 @@
   ))
   ;; TODO Keywords
   (setq org-todo-keywords
-	(quote ((sequence "TODO(t)" "IN_PROGRESS(i)" "|" "DONE(d)")
+	(quote ((sequence "TODO(t)" "IN_PROGRESS(i)" "IN_REVIEW(r)" "|" "DONE(d)")
 		(sequence "NEXT(n)" "WAITING(w@/)" "DELEGATED(D)" "HOLD(h@/)" "|" "CANCELLED(c@/)")))
 	org-global-properties '(("Effort_ALL". "0:10 0:15 0:20 0:30 1:00 2:00 3:00 4:00 6:00 8:00"))
 	org-columns-default-format "%50ITEM(Task) %TODO %TAGS %SCHEDULED %DEADLINE %Effort(Estimated Effort){:} %CLOCKSUM"
