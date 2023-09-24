@@ -60,7 +60,7 @@
 ;;
 ;; Org Mode
 ;;
-  (setq org-directory "~/Dropbox/aimacs/aimorg")
+(setq org-directory "~/Dropbox/aimacs/aimorg")
 
 (after! org
 
@@ -73,12 +73,15 @@
   (setq org-src-fontify-natively 't)
   (setq org-src-tab-acts-natively t)
   (setq org-src-window-setup 'current-window)
-(setq org-agenda-start-on-weekday 5)
+  (setq org-agenda-start-on-weekday 5)
 
   (setq org-agenda-files (append
-			       (directory-files-recursively "~/Dropbox/aimacs/aimorg/" "\\.org$")
-			       (directory-files-recursively "~/Workspace/" "\\.org$")
-  ))
+			  (directory-files-recursively "~/Dropbox/aimacs/aimorg/" "\\.org$")
+			  (directory-files-recursively "~/Workspace/" "\\.org$")
+                          ))
+  (setq org-agenda-files (remove
+			  "~/Dropbox/aimacs/aimorg/archive/archive.org" org-agenda-files
+                          ))
   ;; TODO Keywords
   (setq org-todo-keywords
 	(quote ((sequence "TODO(t)" "IN_PROGRESS(i)" "IN_REVIEW(r)" "|" "DONE(d)")
@@ -90,52 +93,52 @@
 	org-refile-targets '((org-agenda-files :maxlevel . 3))
 	org-capture-templates
 	'(("i" "Inbox" entry (file+headline "~/Dropbox/aimacs/aimorg/inbox.org" "Inbox")
-	    "* TODO %? \n")
-	))
+	   "* TODO %? \n")
+	  ))
 
-;; Agenda files. Change to your chosen file(s)
+  ;; Agenda files. Change to your chosen file(s)
   (global-set-key (kbd "C-c a") 'org-agenda)
 
 
 
-(use-package! org-roam
-  :init
-  (setq org-roam-v2-ack t)
-  :custom
-  (org-roam-directory (file-truename "~/Dropbox/aimacs/aimorg/org-roam/"))
-  (org-roam-dailies-capture-templates
-    '(("d" "default" entry "* %<%I:%M %p>: %?"
-       :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-  :bind (("C-c n l" . org-roam-buffer-toggle)
-         ("C-c n f" . org-roam-node-find)
-         ("C-c n g" . org-roam-graph)
-         ("C-c n i" . org-roam-node-insert)
-         ("C-c n c" . org-roam-capture)
-         ;; Dailies
-         ("C-c n j" . org-roam-dailies-capture-today))
-  :config
-  (org-roam-db-autosync-mode)
-  ;; If using org-roam-protocol
-  (require 'org-roam-protocol))
+  (use-package! org-roam
+    :init
+    (setq org-roam-v2-ack t)
+    :custom
+    (org-roam-directory (file-truename "~/Dropbox/aimacs/aimorg/org-roam/"))
+    (org-roam-dailies-capture-templates
+     '(("d" "default" entry "* %<%I:%M %p>: %?"
+        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
+    :bind (("C-c n l" . org-roam-buffer-toggle)
+           ("C-c n f" . org-roam-node-find)
+           ("C-c n g" . org-roam-graph)
+           ("C-c n i" . org-roam-node-insert)
+           ("C-c n c" . org-roam-capture)
+           ;; Dailies
+           ("C-c n j" . org-roam-dailies-capture-today))
+    :config
+    (org-roam-db-autosync-mode)
+    ;; If using org-roam-protocol
+    (require 'org-roam-protocol))
 
-(use-package! org-brain :ensure t
-  :init
-  (setq org-brain-path "~/Dropbox/aimacs/aimorg/brain")
-  ;; For Evil users
-  (with-eval-after-load 'evil
-    (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
-  :config
-  (bind-key "C-c b" 'org-brain-prefix-map org-mode-map)
-  (setq org-id-track-globally t)
-  (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
-  (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
-  (push '("b" "Brain" plain (function org-brain-goto-end)
-          "* %i%?" :empty-lines 1)
-        org-capture-templates)
-  (setq org-brain-visualize-default-choices 'all)
-  (setq org-brain-title-max-length 12)
-  (setq org-brain-include-file-entries nil
-        org-brain-file-entries-use-title nil))
+  (use-package! org-brain :ensure t
+                :init
+                (setq org-brain-path "~/Dropbox/aimacs/aimorg/brain")
+                ;; For Evil users
+                (with-eval-after-load 'evil
+                  (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
+                :config
+                (bind-key "C-c b" 'org-brain-prefix-map org-mode-map)
+                (setq org-id-track-globally t)
+                (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
+                (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
+                (push '("b" "Brain" plain (function org-brain-goto-end)
+                        "* %i%?" :empty-lines 1)
+                      org-capture-templates)
+                (setq org-brain-visualize-default-choices 'all)
+                (setq org-brain-title-max-length 12)
+                (setq org-brain-include-file-entries nil
+                      org-brain-file-entries-use-title nil))
   )
 
 ;; Allows you to edit entries directly from org-brain-visualize
