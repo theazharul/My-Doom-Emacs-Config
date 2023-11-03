@@ -154,3 +154,5 @@
   :config
   (add-hook 'after-init-hook #'global-prettier-mode)
   )
+
+(use-package! nerd-icons)

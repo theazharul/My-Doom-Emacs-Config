@@ -66,3 +66,4 @@
   :recipe (:host github :repo "magit/with-editor"))
 
 (package! prettier)
+(package! nerd-icons)
