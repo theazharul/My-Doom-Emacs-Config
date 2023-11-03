@@ -150,3 +150,7 @@
 
 (use-package! lsp-tailwindcss)
 (use-package! graphql-mode)
+(use-package! prettier
+  :config
+  (add-hook 'after-init-hook #'global-prettier-mode)
+  )
