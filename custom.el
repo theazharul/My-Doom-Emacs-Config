@@ -5,6 +5,9 @@
  ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    '("333958c446e920f5c350c4b4016908c130c3b46d590af91e1e7e2a0611f1e8c5" default))
+ '(magit-todos-insert-after '(bottom) nil nil "Changed by setter of obsolete option `magit-todos-insert-at'")
+ '(package-selected-packages
+   '(emacsql-sqlite-builtin prettier emacsql-sqlite3 emacsql-sqlite))
  '(warning-suppress-log-types
    '((dart-mode-local-vars-hook)
      (doom-init-ui-hook)

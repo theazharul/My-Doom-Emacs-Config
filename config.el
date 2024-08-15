@@ -22,7 +22,7 @@
 ;; (setq doom-font (font-spec :family "monospace" :size 14 :weight 'semi-light)
 ;;       doom-variable-pitch-font (font-spec :family "sans" :size 15))
 
-(setq doom-font (font-spec :family "Source Code Pro" :size 20))
+(setq doom-font (font-spec :family "Source Code Pro" :size 24))
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
@@ -92,8 +92,8 @@
 	org-archive-location "~/Dropbox/aimacs/aimorg/archive/archive.org::* From %s"
 	org-refile-targets '((org-agenda-files :maxlevel . 3))
 	org-capture-templates
-	'(("i" "Inbox" entry (file+headline "~/Dropbox/aimacs/aimorg/inbox.org" "Inbox")
-	   "* TODO %? \n")
+	'(("i" "Inbox" entry (file+headline "~/Dropbox/aimacs/aimorg/gtd.org" "Inbox")
+	   "* %? \n")
 	  ))
 
   ;; Agenda files. Change to your chosen file(s)

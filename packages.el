@@ -48,6 +48,9 @@
                                         ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
                                         ;(unpin! t)
+
+(package! emacsql-sqlite-builtin)
+
 (package! org-roam)
 
 (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))

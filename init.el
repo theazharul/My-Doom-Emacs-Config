@@ -153,10 +153,10 @@
        (org
         +journal
         +roam2
-       +brain
-       +pomodoro
-       +present
-       +pretty)               ; organize your plain life in plain text
+        +brain
+        +pomodoro
+        +present
+        +pretty)               ; organize your plain life in plain text
        (php +lsp)                ; perl's insecure younger brother
        ;;plantuml          ; diagrams for confusing people more
        ;;purescript        ; javascript, but functional
@@ -190,7 +190,7 @@
        ;;everywhere        ; *leave* Emacs!? You must be joking
        ;;irc               ; how neckbeards socialize
        ;;(rss +org)        ; emacs as an RSS reader
-       twitter           ; twitter client https://twitter.com/vnought
+       ;;twitter           ; twitter client https://twitter.com/vnought
 
        :config
        ;;literate
