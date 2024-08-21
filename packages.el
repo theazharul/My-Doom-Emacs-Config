@@ -70,3 +70,4 @@
 
 (package! prettier)
 (package! nerd-icons)
+(package! polymode)
