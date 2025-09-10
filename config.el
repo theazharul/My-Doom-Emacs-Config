@@ -5,42 +5,113 @@
 
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
-;; clients, file templates and snippets.
+;; clients, file templates and snippets. It is optional.
 (setq user-full-name "Azhar Ibn Mostafiz"
       user-mail-address "theazharul@gmail.com")
 
-;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
-;; are the three important ones:
+;; Doom exposes five (optional) variables for controlling fonts in Doom:
 ;;
-;; + `doom-font'
-;; + `doom-variable-pitch-font'
-;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;; - `doom-font' -- the primary font to use
+;; - `doom-variable-pitch-font' -- a non-monospace font (where applicable)
+;; - `doom-big-font' -- used for `doom-big-font-mode'; use this for
 ;;   presentations or streaming.
+;; - `doom-symbol-font' -- for symbols
+;; - `doom-serif-font' -- for the `fixed-pitch-serif' face
 ;;
-;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
-;; font string. You generally only need these two:
-;; (setq doom-font (font-spec :family "monospace" :size 14 :weight 'semi-light)
-;;       doom-variable-pitch-font (font-spec :family "sans" :size 15))
-
-(setq doom-font (font-spec :family "Source Code Pro" :size 24))
+;; See 'C-h v doom-font' for documentation and more examples of what they
+;; accept. For example:
+;;
+(setq doom-font (font-spec :family "Fira Code" :size 20 :weight 'semi-light)
+      doom-variable-pitch-font (font-spec :family "Fira Sans" :size 22))
+;;
+;; If you or Emacs can't find your font, use 'M-x describe-font' to look them
+;; up, `M-x eval-region' to execute elisp code, and 'M-x doom/reload-font' to
+;; refresh your font settings. If Emacs still can't find your font, it likely
+;; wasn't installed correctly. Font issues are rarely Doom issues!
 
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 ;; `load-theme' function. This is the default:
 (setq doom-theme 'doom-one)
-;; (setq doom-theme 'doom-zenburn)
-
-
-;; If you use `org' and don't want your org files in the default location below,
-;; change `org-directory'. It must be set before org loads!
-(setq org-directory "~/Dropbox/aimacs/aimorg/")
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
 (setq display-line-numbers-type t)
 
+;; If you use `org' and don't want your org files in the default location below,
+;; change `org-directory'. It must be set before org loads!
+;;
+;; Org mode configuration
+;; (defvar my-org-dir "~/Sync/aimacs/aimorg" "Directory for Org files")
+(setq my-org-dir "~/Sync/aimacs/aimorg")  ; Define my-org-dir first
 
-;; Here are some additional functions/macros that could help you configure Doom:
+(setq org-directory my-org-dir
+      org-use-sub-superscripts nil
+      org-log-done t
+      org-startup-indented t
+      org-hide-leading-stars t
+      org-pretty-entities t
+      org-mobile-directory org-directory
+      org-src-fontify-natively t
+      org-src-tab-acts-natively t
+      org-src-window-setup 'current-window
+      org-agenda-start-on-weekday 5
+      org-default-notes-file (concat my-org-dir "/0.Inbox.org")
+      org-special-ctrl-a/e t
+      org-agenda-files
+      (remove (concat my-org-dir "/4.Archives.org")
+              (append (directory-files-recursively my-org-dir "\\.org$")
+                      (directory-files-recursively "~/Workspace/" "\\.org$")))
+      org-todo-keywords '((sequence "TODO(t)" "IN_PROGRESS(i)" "IN_REVIEW(r)" "|" "DONE(d)")
+                          (sequence "NEXT(n)" "WAITING(w@/)" "DELEGATED(D)" "HOLD(h@/)" "|" "CANCELLED(c@/)"))
+      org-global-properties '(("Effort_ALL" . "0:10 0:15 0:20 0:30 1:00 2:00 3:00 4:00 6:00 8:00"))
+      org-columns-default-format "%50ITEM(Task) %TODO %TAGS %SCHEDULED %DEADLINE %Effort(Estimated Effort){:} %CLOCKSUM"
+      org-archive-location (concat my-org-dir "/4.Archives.org::* From %s")
+      org-refile-targets '((org-agenda-files :maxlevel . 3))
+      org-capture-templates
+      `(("i" "Inbox" entry
+         (file+headline ,(expand-file-name "0.Inbox.org" my-org-dir) "Inbox")
+         "*  %?\n  %i\n  %a"))
+      org-agenda-window-setup 'current-window)
+
+;; Org Roam
+(after! org-roam
+  (setq org-roam-directory (file-truename "~/Sync/aimacs/aimorg/org-roam/")
+        org-roam-completion-everywhere t
+        org-roam-capture-templates
+        '(("d" "default" plain
+           "%?"
+           :if-new (file+head "%<%Y%m%dT%H%M>--${slug}.org"
+                              "#+title: ${title}\n#+date: %U\n#+roam_tags:\n\n")
+           :unnarrowed t))
+        org-roam-dailies-directory "dailies/"
+        org-roam-dailies-capture-templates
+        '(("d" "default" entry
+           "* %?"
+           :if-new (file+head "%<%Y-%m-%d>.org"
+                              "#+title: %<%Y-%m-%d>\n#+filetags: :journal:\n\n")))
+
+        ;; Org roam ui config
+        org-roam-ui-sync-theme t
+        org-roam-ui-follow t
+        org-roam-ui-update-on-save t
+        org-roam-ui-open-on-start t
+        ))
+
+;; Whenever you reconfigure a package, make sure to wrap your config in an
+;; `after!' block, otherwise Doom's defaults may override your settings. E.g.
+;;
+;;   (after! PACKAGE
+;;     (setq x y))
+;;
+;; The exceptions to this rule:
+;;
+;;   - Setting file/directory variables (like `org-directory')
+;;   - Setting variables which explicitly tell you to set them before their
+;;     package is loaded (see 'C-h v VARIABLE' to look up their documentation).
+;;   - Setting doom variables (which start with 'doom-' or '+').
+;;
+;; Here are some additional functions/macros that will help you configure Doom.
 ;;
 ;; - `load!' for loading external *.el files relative to this one
 ;; - `use-package!' for configuring packages
@@ -53,128 +124,8 @@
 ;; To get information about any of these functions/macros, move the cursor over
 ;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
 ;; This will open documentation for it, including demos of how they are used.
+;; Alternatively, use `C-h o' to look up a symbol (functions, variables, faces,
+;; etc).
 ;;
 ;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
 ;; they are implemented.
-;;
-;;
-;; Org Mode
-;;
-(setq org-directory "~/Dropbox/aimacs/aimorg")
-
-(after! org
-
-  (defun org-clocking-buffer (&rest _))
-  (setq org-startup-indented 'f)
-  (setq org-special-ctrl-a/e 't)
-  (setq org-default-notes-file (concat org-directory "/notes.org"))
-  (define-key global-map "\C-cc" 'org-capture)
-  (setq org-mobile-directory "~/Dropbox/aimacs/aimorg")
-  (setq org-src-fontify-natively 't)
-  (setq org-src-tab-acts-natively t)
-  (setq org-src-window-setup 'current-window)
-  (setq org-agenda-start-on-weekday 5)
-
-  (setq org-agenda-files (append
-			  (directory-files-recursively "~/Dropbox/aimacs/aimorg/" "\\.org$")
-			  (directory-files-recursively "~/Workspace/" "\\.org$")
-                          ))
-  (setq org-agenda-files (remove
-			  "~/Dropbox/aimacs/aimorg/archive/archive.org" org-agenda-files
-                          ))
-  ;; TODO Keywords
-  (setq org-todo-keywords
-	(quote ((sequence "TODO(t)" "IN_PROGRESS(i)" "IN_REVIEW(r)" "|" "DONE(d)")
-		(sequence "NEXT(n)" "WAITING(w@/)" "DELEGATED(D)" "HOLD(h@/)" "|" "CANCELLED(c@/)")))
-	org-global-properties '(("Effort_ALL". "0:10 0:15 0:20 0:30 1:00 2:00 3:00 4:00 6:00 8:00"))
-	org-columns-default-format "%50ITEM(Task) %TODO %TAGS %SCHEDULED %DEADLINE %Effort(Estimated Effort){:} %CLOCKSUM"
-	create-lockfiles nil
-	org-archive-location "~/Dropbox/aimacs/aimorg/archive/archive.org::* From %s"
-	org-refile-targets '((org-agenda-files :maxlevel . 3))
-	org-capture-templates
-	'(("i" "Inbox" entry (file+headline "~/Dropbox/aimacs/aimorg/gtd.org" "Inbox")
-	   "* %? \n")
-	  ))
-
-  ;; Agenda files. Change to your chosen file(s)
-  (global-set-key (kbd "C-c a") 'org-agenda)
-
-
-
-  (use-package! org-roam
-    :init
-    (setq org-roam-v2-ack t)
-    :custom
-    (org-roam-directory (file-truename "~/Dropbox/aimacs/aimorg/org-roam/"))
-    (org-roam-dailies-capture-templates
-     '(("d" "default" entry "* %<%I:%M %p>: %?"
-        :if-new (file+head "%<%Y-%m-%d>.org" "#+title: %<%Y-%m-%d>\n"))))
-    :bind (("C-c n l" . org-roam-buffer-toggle)
-           ("C-c n f" . org-roam-node-find)
-           ("C-c n g" . org-roam-graph)
-           ("C-c n i" . org-roam-node-insert)
-           ("C-c n c" . org-roam-capture)
-           ;; Dailies
-           ("C-c n j" . org-roam-dailies-capture-today))
-    :config
-    (org-roam-db-autosync-mode)
-    ;; If using org-roam-protocol
-    (require 'org-roam-protocol))
-
-  (use-package! org-brain :ensure t
-                :init
-                (setq org-brain-path "~/Dropbox/aimacs/aimorg/brain")
-                ;; For Evil users
-                (with-eval-after-load 'evil
-                  (evil-set-initial-state 'org-brain-visualize-mode 'emacs))
-                :config
-                (bind-key "C-c b" 'org-brain-prefix-map org-mode-map)
-                (setq org-id-track-globally t)
-                (setq org-id-locations-file "~/.emacs.d/.org-id-locations")
-                (add-hook 'before-save-hook #'org-brain-ensure-ids-in-buffer)
-                (push '("b" "Brain" plain (function org-brain-goto-end)
-                        "* %i%?" :empty-lines 1)
-                      org-capture-templates)
-                (setq org-brain-visualize-default-choices 'all)
-                (setq org-brain-title-max-length 12)
-                (setq org-brain-include-file-entries nil
-                      org-brain-file-entries-use-title nil))
-  )
-
-;; Allows you to edit entries directly from org-brain-visualize
-;; (use-package! polymode
-;;   :config
-;;   (add-hook 'org-brain-visualize-mode-hook #'org-brain-polymode))
-
-(+global-word-wrap-mode +1)
-
-(use-package! lsp-tailwindcss)
-(use-package! graphql-mode)
-(use-package! prettier
-  :config
-  (add-hook 'after-init-hook #'global-prettier-mode)
-  )
-
-(use-package! nerd-icons)
-
-;; polymode config
-;; Assumes web-mode and elixir-mode are already set up
-;;
-(use-package! polymode
-  :mode ("\.ex$" . poly-elixir-web-mode)
-  :config
-  (define-hostmode poly-elixir-hostmode :mode 'elixir-mode)
-  (define-innermode poly-liveview-expr-elixir-innermode
-    :mode 'web-mode
-    :head-matcher (rx line-start (* space) "~H" (= 3 (char "\"'")) line-end)
-    :tail-matcher (rx line-start (* space) (= 3 (char "\"'")) line-end)
-    :head-mode 'host
-    :tail-mode 'host
-    :allow-nested nil
-    :keep-in-mode 'host
-    :fallback-mode 'host)
-  (define-polymode poly-elixir-web-mode
-    :hostmode 'poly-elixir-hostmode
-    :innermodes '(poly-liveview-expr-elixir-innermode))
-  )
-(setq web-mode-engines-alist '(("elixir" . "\\.ex\\'")))
